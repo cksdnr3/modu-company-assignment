@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { formatDate } from '../../utils/formatDate';
 
-// Todo 상태 추가
 export const status = {
     PENDING: 'pending',
     ONGOING: 'ongoing',
@@ -20,18 +20,18 @@ export const useTodo = () => {
 
     // Task 추가
     const createTodo = () => {
-
-    }
+        const createdAt = formatDate(new Date());
+    };
 
     // Task 삭제
     const removeTodo = () => {
 
-    }
+    };
 
     // Task 상태 변경
     const changeStatus = () => {
 
-    }
+    };
 
     useEffect(() => {
         loadData();
@@ -44,11 +44,11 @@ export const useTodo = () => {
     const loadData = () => {
         let data = localStorage.getItem('todos');
         setTodos(JSON.parse(data!));
-    }
+    };
 
     const saveData = () => {
         localStorage.setItem('todos', JSON.stringify(todos));
-    }
+    };
 
-    return { todos }
+    return { todos };
 }
