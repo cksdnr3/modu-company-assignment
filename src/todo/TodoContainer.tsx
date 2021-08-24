@@ -1,46 +1,69 @@
 import React, { useState } from 'react';
+import TodoList from 'components/TodoList/TodoList';
 import filter from 'utils/filter';
 import { useTodo, status, importance } from 'todo/TodoService';
+import styled from 'styled-components';
 
 type InitialFilteredTagsType = {
-    status: StatusType;
-    importance: ImportanceType;
-}
+  status: StatusType;
+  importance: ImportanceType;
+};
 
 type StatusType = {
-    [key: string]: boolean;
-}
+  [key: string]: boolean;
+};
 
 type ImportanceType = {
-    [key: number]: boolean;
-}
+  [key: number]: boolean;
+};
 
 const initialFilteredTags: InitialFilteredTagsType = {
-    status: {
-        [status.PENDING]: false,
-        [status.ONGOING]: true,
-        [status.COMPLETED]: false,
-    },
-    importance: {
-        [importance.LOW]: false,
-        [importance.MID]: false,
-        [importance.HIGH]: false,
-    }
-}
+  status: {
+    [status.PENDING]: false,
+    [status.ONGOING]: true,
+    [status.COMPLETED]: false,
+  },
+  importance: {
+    [importance.LOW]: false,
+    [importance.MID]: false,
+    [importance.HIGH]: false,
+  },
+};
 
 const TodoContainer: React.FC = () => {
-    const { todos } = useTodo();
-    const [filterTags, setFilterTags] = useState(initialFilteredTags);
+  const { todos, createTodo, removeTodo, changeStatus, loadData, saveData } =
+    useTodo();
 
-    const handleStatusFilter = (tag: string) => {
-        setFilterTags(prev => ({ ...prev, status: { ...prev.status, [tag]: !prev.status[tag] } }))
-    };
+  const [filterTags, setFilterTags] = useState(initialFilteredTags);
 
-    const handleImportanceFilter = (tag: number) => {
-        setFilterTags(prev => ({ ...prev, importance: { ...prev.importance, [tag]: !prev.importance[tag] } }))
-    };
+  const handleStatusFilter = (tag: string) => {
+    setFilterTags((prev) => ({
+      ...prev,
+      status: { ...prev.status, [tag]: !prev.status[tag] },
+    }));
+  };
 
-    return <></>;
-}
+  const handleImportanceFilter = (tag: number) => {
+    setFilterTags((prev) => ({
+      ...prev,
+      importance: { ...prev.importance, [tag]: !prev.importance[tag] },
+    }));
+  };
+
+  return (
+    <Container>
+      <TodoList
+        removeTodo={removeTodo}
+        changeStatus={changeStatus}
+        todo={todos}
+      />
+    </Container>
+  );
+};
 
 export default TodoContainer;
+
+const Container = styled.div`
+  ${({ theme }) => theme.flexSet()};
+  /* color: rgb(18, 110, 130); */
+`;
