@@ -24,7 +24,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
       importance: Number(form.importance),
     });
 
-    setForm({ task: "", importance: 0 });
+    setForm({ task: "", importance: importance.LOW });
   };
 
   const onChange = (

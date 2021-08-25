@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import { formatDate } from "utils/formatDate";
 import dummyData from "assets/dummyData.json";
 
-export const status = {
-  PENDING: "pending",
-  ONGOING: "ongoing",
-  COMPLETED: "completed",
+export type CreateTodo = {
+  task: string;
+  importance: number;
 };
+export enum status {
+  PENDING = "pending",
+  ONGOING = "ongoing",
+  COMPLETED = "completed",
+}
 
 export enum importance {
   LOW,
@@ -15,6 +19,7 @@ export enum importance {
 }
 
 export type Todo = {
+  [key: string]: string | number | undefined;
   id: number;
   task: string;
   status: string;
@@ -23,15 +28,9 @@ export type Todo = {
   updatedAt?: string;
 };
 
-export type CreateTodo = {
-  task: string;
-  importance: number;
-};
-
 export const useTodo = () => {
   const [todos, setTodos] = useState<Todo[]>(dummyData);
 
-  // Task 추가
   const createTodo = (todo: CreateTodo) => {
     const id = Math.max(0, ...todos.map((todo) => todo.id)) + 1;
     const createdAt = formatDate(new Date());
