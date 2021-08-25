@@ -2,10 +2,6 @@ import { useState, useEffect } from "react";
 import { formatDate } from "utils/formatDate";
 import dummyData from "assets/dummyData.json";
 
-export type CreateTodo = {
-  task: string;
-  importance: number;
-};
 export enum status {
   PENDING = "pending",
   ONGOING = "ongoing",
@@ -26,6 +22,11 @@ export type Todo = {
   importance: number;
   createdAt: string;
   updatedAt?: string;
+};
+
+export type CreateTodo = {
+  task: string;
+  importance: number;
 };
 
 export const useTodo = () => {
