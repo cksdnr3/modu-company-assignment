@@ -1,56 +1,70 @@
 [
   {
     "id": 1,
-    "task": "자소서 쓰기1",
-    "status": "pending",
+    "task": "task1",
+    "status": "ongoing",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 1
   },
   {
     "id": 2,
-    "task": "자소서 쓰기2",
-    "status": "ongoing",
+    "task": "task2",
+    "status": "pending",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 2
   },
   {
     "id": 3,
-    "task": "자소서 쓰기3",
+    "task": "task3",
     "status": "completed",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 3
   },
   {
     "id": 4,
-    "task": "자소서 쓰기4",
+    "task": "task4",
     "status": "ongoing",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 2
   },
   {
     "id": 5,
-    "task": "자소서 쓰기5",
-    "status": "ongoing",
+    "task": "task5",
+    "status": "pending",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 1
   },
   {
     "id": 6,
-    "task": "자소서 쓰기6",
-    "status": "ongoing",
+    "task": "task6",
+    "status": "completed",
     "createdAt": "2021-08-24",
-    "importance": 0
+    "importance": 2
   },
   {
     "id": 7,
-    "task": "자소서 쓰기7",
+    "task": "task7",
+    "status": "ongoing",
+    "createdAt": "2021-08-24",
+    "importance": 1
+  },
+  {
+    "id": 8,
+    "task": "task8",
+    "status": "pending",
+    "createdAt": "2021-08-24",
+    "importance": 2
+  },
+  {
+    "id": 9,
+    "task": "task9",
     "status": "ongoing",
     "createdAt": "2021-08-24",
     "importance": 0
   },
   {
-    "id": 8,
-    "task": "자소서 쓰기8",
+    "id": 10,
+    "task": "task10",
     "status": "ongoing",
     "createdAt": "2021-08-24",
     "importance": 0

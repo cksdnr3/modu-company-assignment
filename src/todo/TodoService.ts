@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { formatDate } from 'utils/formatDate';
 import dummyData from 'assets/data/dummyData.json';
@@ -7,16 +6,6 @@ export enum status {
   PENDING = 'pending',
   ONGOING = 'ongoing',
   COMPLETED = 'completed',
-=======
-import { useState, useEffect } from "react";
-import { formatDate } from "utils/formatDate";
-import dummyData from "assets/dummyData.json";
-
-export enum status {
-  PENDING = "pending",
-  ONGOING = "ongoing",
-  COMPLETED = "completed",
->>>>>>> main
 }
 
 export enum importance {
@@ -35,11 +24,6 @@ export type Todo = {
   updatedAt?: string;
 };
 
-<<<<<<< HEAD
-export const useTodo = () => {
-  const [todos, setTodos] = useState<Todo[]>(dummyData);
-
-=======
 export type CreateTodo = {
   task: string;
   importance: number;
@@ -64,14 +48,15 @@ export const useTodo = () => {
   };
 
   // Task 삭제
-  const removeTodo = () => {};
+  const removeTodo = (id: number) => {
+    setTodos((perv) => perv.filter((todo) => todo.id !== id));
+  };
 
   // Task 상태 변경
   const changeStatus = () => {
     const updatedAt = formatDate(new Date());
   };
 
->>>>>>> main
   useEffect(() => {
     loadData();
   }, []);
@@ -80,25 +65,9 @@ export const useTodo = () => {
     saveData();
   }, [todos]);
 
-<<<<<<< HEAD
-  // Task 추가
-  const createTodo = () => {
-    const createdAt = formatDate(new Date());
-  };
-
-  // Task 삭제
-  const removeTodo = (id: number) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
-  };
-
   const loadData = () => {
     let data = localStorage.getItem('todos');
-    if (data === null) return;
-    setTodos(JSON.parse(data));
-    // setTodos(JSON.parse(data!) || [...dummyData]);
-  };
-  const changeStatus = () => {
-    const updatedAt = formatDate(new Date());
+    setTodos(JSON.parse(data!) || [...dummyData]);
   };
 
   const saveData = () => {
@@ -106,16 +75,4 @@ export const useTodo = () => {
   };
 
   return { todos, createTodo, removeTodo, changeStatus, loadData, saveData };
-=======
-  const loadData = () => {
-    let data = localStorage.getItem("todos");
-    setTodos(JSON.parse(data!) || []);
-  };
-
-  const saveData = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-
-  return { todos, createTodo };
->>>>>>> main
 };

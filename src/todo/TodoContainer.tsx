@@ -32,8 +32,7 @@ const initialFilteredTags: InitialFilteredTagsType = {
 };
 
 const TodoContainer: React.FC = () => {
-  const { todos, createTodo, removeTodo, changeStatus, loadData, saveData } =
-    useTodo();
+  const { todos, createTodo, removeTodo, changeStatus } = useTodo();
 
   const [filterTags, setFilterTags] = useState(initialFilteredTags);
 
