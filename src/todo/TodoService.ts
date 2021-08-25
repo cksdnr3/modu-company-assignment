@@ -27,7 +27,6 @@ export type Todo = {
 export const useTodo = () => {
   const [todos, setTodos] = useState<Todo[]>(dummyData);
 
-<<<<<<< HEAD
   useEffect(() => {
     loadData();
   }, []);
@@ -36,8 +35,6 @@ export const useTodo = () => {
     saveData();
   }, [todos]);
 
-=======
->>>>>>> f3aa509 (add: icon files)
   // Task 추가
   const createTodo = () => {
     const createdAt = formatDate(new Date());
@@ -50,21 +47,12 @@ export const useTodo = () => {
 
   const loadData = () => {
     let data = localStorage.getItem('todos');
-<<<<<<< HEAD
     if (data === null) return;
     setTodos(JSON.parse(data));
     // setTodos(JSON.parse(data!) || [...dummyData]);
   };
   const changeStatus = () => {
     const updatedAt = formatDate(new Date());
-=======
-    console.log(data);
-    if (data) {
-      setTodos(JSON.parse(data));
-    } else {
-      setTodos(JSON.parse(data!) || [...dummyData]);
-    }
->>>>>>> f3aa509 (add: icon files)
   };
 
   const saveData = () => {
