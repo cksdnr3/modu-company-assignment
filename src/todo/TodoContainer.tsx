@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import filter from "utils/filter";
-import { useTodo, status, importance } from "todo/TodoService";
-import TodoHeader from "todo/TodoHeader/TodoHeader";
+import React, { useState } from 'react';
+import TodoList from 'components/TodoList/TodoList';
+import TodoHeader from 'todo/TodoHeader/TodoHeader';
+import filter from 'utils/filter';
+import { useTodo, status, importance } from 'todo/TodoService';
+import styled from 'styled-components';
 
 type InitialFilteredTagsType = {
   status: StatusType;
@@ -30,7 +32,8 @@ const initialFilteredTags: InitialFilteredTagsType = {
 };
 
 const TodoContainer: React.FC = () => {
-  const { todos, createTodo } = useTodo();
+  const { todos, createTodo, removeTodo, changeStatus } = useTodo();
+
   const [filterTags, setFilterTags] = useState(initialFilteredTags);
 
   const handleStatusFilter = (tag: string) => {
@@ -48,10 +51,20 @@ const TodoContainer: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <TodoHeader createTodo={createTodo} />
-    </>
+      <TodoList
+        removeTodo={removeTodo}
+        changeStatus={changeStatus}
+        todo={todos}
+      />
+    </Container>
   );
 };
 
 export default TodoContainer;
+
+const Container = styled.div`
+  ${({ theme }) => theme.flexSet()};
+  /* color: rgb(18, 110, 130); */
+`;
