@@ -2,13 +2,18 @@ import { useState, useEffect } from 'react';
 import { formatDate } from 'utils/formatDate';
 import dummyData from 'assets/dummyData.json'
 
-export const status = {
-    PENDING: 'pending',
-    ONGOING: 'ongoing',
-    COMPLETED: 'completed',
+export enum status {
+    PENDING = 'pending',
+    ONGOING = 'ongoing',
+    COMPLETED = 'completed',
+} 
+
+export enum importance {
+    LOW, MID, HIGH
 }
 
 export type Todo = {
+    [key: string]: string | number | undefined;
     id: number;
     task: string;
     status: string;
@@ -19,6 +24,14 @@ export type Todo = {
 
 export const useTodo = () => {
     const [todos, setTodos] = useState<Todo[]>(dummyData);
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    useEffect(() => {
+        saveData();
+    }, [todos]);
 
     // Task 추가 
     const createTodo = () => {
@@ -31,21 +44,12 @@ export const useTodo = () => {
     };
 
     // Task 상태 변경
-    const changeStatus = () => {
-        const updatedAt = formatDate(new Date());
-    };
 
-    useEffect(() => {
-        loadData();
-    }, []);
-
-    useEffect(() => {
-        saveData();
-    }, [todos]);
 
     const loadData = () => {
         let data = localStorage.getItem('todos');
-        setTodos(JSON.parse(data!));
+        if (data === null) return;
+        setTodos(JSON.parse(data));
     };
 
     const saveData = () => {
