@@ -24,4 +24,4 @@ yarn-error.log*
 yarn.lock
 package-lock.json
 
-/assets/dummyData.json
+assets/dummyData.json
