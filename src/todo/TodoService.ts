@@ -8,6 +8,12 @@ export const status = {
   COMPLETED: "completed",
 };
 
+export enum importance {
+  LOW,
+  MID,
+  HIGH,
+}
+
 export type Todo = {
   id: number;
   task: string;

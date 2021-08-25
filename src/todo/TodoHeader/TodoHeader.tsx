@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { CreateTodo } from "todo/TodoService";
+import { CreateTodo, importance } from "todo/TodoService";
 
-const impotantRank = [0, 1, 2, 3];
+const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
 
 interface TodoHeaderProps {
   createTodo: (todo: CreateTodo) => void;
 }
 
 const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
-  const [form, setForm] = useState<CreateTodo>({ task: "", importance: 0 });
+  const [form, setForm] = useState<CreateTodo>({
+    task: "",
+    importance: importance.LOW,
+  });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -35,11 +38,11 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     <Contianer>
       <InsertForm onSubmit={onSubmit}>
         <SelectDiv>
-          중요도 - {form.importance}
+          중요도 - {importance[form.importance]}
           <Select name="importance" value={form.importance} onChange={onChange}>
             {impotantRank.map((value) => (
               <option key={value} value={value}>
-                {value}
+                {importance[value]}
               </option>
             ))}
           </Select>

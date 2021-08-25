@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTodo } from "./TodoService";
-import TodoHeader from "todo/header/TodoHeader";
+import TodoHeader from "todo/TodoHeader/TodoHeader";
 
 const TodoContainer: React.FC = () => {
   const { todos, createTodo } = useTodo();
