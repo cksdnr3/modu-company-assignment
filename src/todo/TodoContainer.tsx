@@ -1,65 +1,59 @@
-import React, { useState } from 'react';
-import TodoList from 'components/TodoList/TodoList';
-import TodoHeader from 'todo/TodoHeader/TodoHeader';
-import filter from 'utils/filter';
-import { useTodo, status, importance } from 'todo/TodoService';
-import styled from 'styled-components';
 
-type InitialFilteredTagsType = {
-  status: StatusType;
-  importance: ImportanceType;
+import React, { useState } from "react";
+import filter, { FilterTagsType } from "utils/filter";
+import { useTodo, status, importance } from "todo/TodoService";
+import TodoHeader from "todo/TodoHeader/TodoHeader";
+import TodoFilter from "./TodoFilter/TodoFilter";
+import useToggle from "hooks/useToggle";
+import TodoList from "components/TodoList/TodoList";
+import styled from "styled-components";
+
+const initialFilteredTags: FilterTagsType = {
+  status: {
+    [status.PENDING]: false,
+    [status.ONGOING]: false,
+    [status.COMPLETED]: false,
+  },
+  importance: {
+    [importance.LOW]: false,
+    [importance.MID]: false,
+    [importance.HIGH]: false,
+  },
 };
 
-type StatusType = {
-  [key: string]: boolean;
-};
-
-type ImportanceType = {
-  [key: number]: boolean;
-};
-
-// const initialFilteredTags: InitialFilteredTagsType = {
-//   status: {
-//     [status.PENDING]: false,
-//     [status.ONGOING]: true,
-//     [status.COMPLETED]: false,
-//   },
-//   importance: {
-//     [importance.LOW]: false,
-//     [importance.MID]: false,
-//     [importance.HIGH]: false,
-//   },
-// };
 
 const TodoContainer: React.FC = () => {
   const { todos, createTodo, removeTodo, changeStatus } = useTodo();
 
-  // const [filterTags, setFilterTags] = useState(initialFilteredTags);
+  const [filterTags, setFilterTags] = useState(initialFilteredTags);
+  const filterToggle = useToggle();
+  const { toggle } = filterToggle;
 
-  // const handleStatusFilter = (tag: string) => {
-  //   setFilterTags((prev) => ({
-  //     ...prev,
-  //     status: { ...prev.status, [tag]: !prev.status[tag] },
-  //   }));
-  // };
-
-  // const handleImportanceFilter = (tag: number) => {
-  //   setFilterTags((prev) => ({
-  //     ...prev,
-  //     importance: { ...prev.importance, [tag]: !prev.importance[tag] },
-  //   }));
-  // };
+  const handleFilter = (filter: FilterTagsType): void => {
+    setFilterTags((prev: FilterTagsType) => ({
+      ...prev,
+      ...filter
+    }));
+  };
 
   return (
     <Container>
-      <Wrap>
-        <TodoHeader createTodo={createTodo} />
-        <TodoList
-          removeTodo={removeTodo}
-          changeStatus={changeStatus}
-          todo={todos}
-        />
-      </Wrap>
+      <TodoHeader createTodo={createTodo} />
+      {
+        toggle 
+        && <TodoFilter 
+          filterTags={filterTags}
+          handleFilter={handleFilter}
+          {...filterToggle} 
+          />
+      }
+
+      <TodoList
+        removeTodo={removeTodo}
+        changeStatus={changeStatus}
+        todo={filter(filterTags, todos)}
+        {...filterToggle}
+      />
     </Container>
   );
 };

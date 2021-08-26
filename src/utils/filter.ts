@@ -3,15 +3,14 @@ type KeysType = {
 }
 
 type StrIndex = {
-    [key: string]: string | number | undefined;
+    [key: string]: any;
 }
 
-type FilterTagsType = {
+export type FilterTagsType = {
     [key: string]: TagsType
 }
 
-type TagsType = {
-    [key: number]: boolean;
+export type TagsType = {
     [key: string]: boolean;
 }
 
@@ -21,7 +20,7 @@ export default function filter<Item extends StrIndex>(filterTags: FilterTagsType
         return items.filter((item: Item) => {
             return filterKeys.every((key: string) => {
                 if (!filters[key].length) return true;
-                return filters[key].includes(String(item[key])); 
+                return filters[key].includes(item[key]); 
             });
         })
     };

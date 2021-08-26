@@ -2,20 +2,25 @@ import React from "react";
 import { Todo } from "todo/TodoService";
 import TodoItem from "components/TodoItem/TodoItem";
 import styled from "styled-components";
+import FilterIcon from "components/FilterIcon";
 
 interface TodoListProps {
   changeStatus: (todo: Todo) => void;
   removeTodo: (id: number) => void;
+  toggle: boolean;
+  handleToggle: () => void;
   todo: Todo[];
 }
 
 export default function TodoList({
   changeStatus,
   removeTodo,
+  handleToggle,
   todo,
 }: TodoListProps) {
   return (
     <Container>
+      <Icon onClick={handleToggle}><FilterIcon /></Icon>
       <Wrap>
         {todo &&
           todo.map((item) => (
@@ -43,3 +48,8 @@ const Wrap = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
+
+const Icon = styled.span`
+  display: flex;
+  flex-direction: row-reverse;
+`

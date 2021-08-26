@@ -9,9 +9,10 @@ export enum status {
 }
 
 export enum importance {
-  LOW = 'LOW',
-  MID = 'MID',
-  HIGH = 'HIGH',
+  LOW = 'low',
+  MID = 'mid',
+  HIGH = 'high',
+
 }
 
 export type Todo = {
