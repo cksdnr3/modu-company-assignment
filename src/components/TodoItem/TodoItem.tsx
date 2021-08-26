@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Todo } from 'todo/TodoService';
-import { status } from 'todo/TodoService';
-import { ReactComponent as Edit } from 'assets/images/edit.svg';
-import { ReactComponent as Trash } from 'assets/images/trash.svg';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
+import { ReactComponent as Edit } from "assets/images/edit.svg";
+import { ReactComponent as Trash } from "assets/images/trash.svg";
+import { Todo, status, importance } from "todo/TodoService";
 
 const statusRank = [status.PENDING, status.ONGOING, status.COMPLETED];
+const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
 
 interface TodoItemProps {
-  changeStatus: (id: number) => void;
+  changeStatus: (todo: Todo) => void;
   removeTodo: (id: number) => void;
   todo: Todo;
 }
@@ -19,14 +19,38 @@ export default function TodoItem({
   todo,
 }: TodoItemProps) {
   const [isModify, setIsModify] = useState(false);
+  const [form, setForm] = useState<Todo>(todo);
 
-  const hadleEdit = (id: number) => {
+  const hadleEdit = (id: number): void => {
     setIsModify(true);
-    changeStatus(id);
+    setForm(todo);
   };
 
-  const handleRemove = (id: number) => {
-    removeTodo(id);
+  const handleRemove = (id: number): void => removeTodo(id);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
+    const { name, value } = e.target;
+    setForm((prev: Todo) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleStatus = (status: any) => {
+    setForm((prev: Todo) => ({
+      ...prev,
+      status,
+    }));
+  };
+
+  const handleSubmit = (): void => {
+    changeStatus({
+      ...form,
+      importance: Number(form.importance),
+    });
+    setIsModify(false);
   };
 
   return (
@@ -34,20 +58,45 @@ export default function TodoItem({
       <TaskBox>
         <TaskTitleBox>
           <ImfortanceStatus>{todo.importance}</ImfortanceStatus>
-          {!isModify ? <Text>{todo.task}</Text> : <TaskInput />}
+          <ImfortanceBox>
+            {isModify && (
+              <select
+                name="importance"
+                value={form.importance}
+                onChange={handleChange}
+              >
+                {impotantRank.map((value) => (
+                  <option key={value} value={value}>
+                    {importance[value]}
+                  </option>
+                ))}
+              </select>
+            )}
+          </ImfortanceBox>
+          {!isModify ? (
+            <Text>{todo.task}</Text>
+          ) : (
+            <TaskInput name="task" value={form.task} onChange={handleChange} />
+          )}
         </TaskTitleBox>
         <StatusBox>
-          <Status isModify={isModify} isStatus={todo.status}>
-            {todo.status}
-          </Status>
-          {isModify &&
-            statusRank
-              .filter((status) => status !== todo.status)
-              .map((status) => (
-                <Status isModify={isModify} isStatus={status}>
-                  {status}
-                </Status>
-              ))}
+          {isModify ? (
+            statusRank.map((status) => (
+              <Status
+                key={status}
+                isModify={isModify}
+                isStatus={status}
+                currentStatus={form.status}
+                onClick={() => handleStatus(status)}
+              >
+                {status}
+              </Status>
+            ))
+          ) : (
+            <Status isModify={isModify} isStatus={todo.status}>
+              {todo.status}
+            </Status>
+          )}
         </StatusBox>
       </TaskBox>
       {!isModify ? (
@@ -61,7 +110,7 @@ export default function TodoItem({
         </div>
       ) : (
         <ButtonBox>
-          <ConformButton>확인</ConformButton>
+          <ConformButton onClick={handleSubmit}>확인</ConformButton>
           <CancleButton onClick={() => setIsModify(false)}>취소</CancleButton>
         </ButtonBox>
       )}
@@ -70,10 +119,10 @@ export default function TodoItem({
 }
 
 const Container = styled.div<{ isModify: boolean }>`
-  ${({ theme }) => theme.flexSet('space-between')};
+  ${({ theme }) => theme.flexSet("space-between")};
   width: 100%;
   height: 55px;
-  min-height: ${({ isModify }) => (isModify ? '90px' : '70px')};
+  min-height: ${({ isModify }) => (isModify ? "90px" : "70px")};
   margin: 10px 0;
   padding: 10px;
   background-color: white;
@@ -82,7 +131,7 @@ const Container = styled.div<{ isModify: boolean }>`
 `;
 
 const TaskTitleBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+  ${({ theme }) => theme.flexSet("flex-start")};
 `;
 
 const ImfortanceStatus = styled.div`
@@ -90,7 +139,7 @@ const ImfortanceStatus = styled.div`
 `;
 
 const TaskBox = styled.div`
-  ${({ theme }) => theme.flexSet('space-between', '', 'column')};
+  ${({ theme }) => theme.flexSet("space-between", "", "column")};
   height: 100%;
 `;
 
@@ -105,11 +154,19 @@ const TaskInput = styled.input`
   padding-left: 5px;
 `;
 
-const StatusBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+const ImfortanceBox = styled.div`
+  ${({ theme }) => theme.flexSet("flex-start")};
 `;
 
-const Status = styled.div<{ isModify: boolean; isStatus: string }>`
+const StatusBox = styled.div`
+  ${({ theme }) => theme.flexSet("flex-start")};
+`;
+
+const Status = styled.div<{
+  isModify: boolean;
+  isStatus: string;
+  currentStatus?: string;
+}>`
   ${({ theme }) => theme.flexSet()};
   max-width: 80px;
   margin: 6px 6px 0 0;
@@ -117,19 +174,35 @@ const Status = styled.div<{ isModify: boolean; isStatus: string }>`
   color: rgb(230 32 32);
   border: 1px solid rgb(230 32 32);
   border-radius: 3px;
-  /* rgb(29 162 58); 초록 */
-  /* color: rgb(42 67 191);
-    border: 1px solid rgb(38 68 220); */
-  ${({ isModify, isStatus }) =>
-    isModify &&
-    isStatus === 'pending' &&
-    `&:hover {
-    color: white;
-    border: 1px solide rgb(230 32 32);
-    background-color: rgb(230 32 32);
-    cursor: pointer;
-  `} }
-  
+
+  ${({ isModify, isStatus, currentStatus }) => {
+    if (isModify) {
+      if (isStatus === "pending" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: green;
+          background-color: green;
+        `;
+      }
+      if (isStatus === "ongoing" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: yellow;
+          background-color: yellow;
+        `;
+      }
+      if (isStatus === "completed" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: red;
+          background-color: red;
+        `;
+      }
+    }
+  }})
 `;
 
 const ModifyButton = styled.button`
@@ -157,7 +230,7 @@ const DeleteButton = styled.button`
 `;
 
 const ButtonBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-end', 'flex-end')};
+  ${({ theme }) => theme.flexSet("flex-end", "flex-end")};
   height: 100%;
   cursor: pointer;
 `;

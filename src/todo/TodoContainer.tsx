@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import TodoList from 'components/TodoList/TodoList';
-import TodoHeader from 'todo/TodoHeader/TodoHeader';
-import filter from 'utils/filter';
-import { useTodo, status, importance } from 'todo/TodoService';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import TodoList from "components/TodoList/TodoList";
+import TodoHeader from "todo/TodoHeader/TodoHeader";
+import filter from "utils/filter";
+import { useTodo, status, importance } from "todo/TodoService";
+import styled from "styled-components";
 
 type InitialFilteredTagsType = {
   status: StatusType;
