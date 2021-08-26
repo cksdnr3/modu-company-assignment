@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import { ReactComponent as Edit } from "assets/images/edit.svg";
-import { ReactComponent as Trash } from "assets/images/trash.svg";
-import { Todo, status, importance } from "todo/TodoService";
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
+import { ReactComponent as Edit } from 'assets/images/edit.svg';
+import { ReactComponent as Trash } from 'assets/images/trash.svg';
+import { Todo, status, importance } from 'todo/TodoService';
 
 const statusRank = [status.PENDING, status.ONGOING, status.COMPLETED];
 const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
@@ -61,7 +61,7 @@ export default function TodoItem({
           <ImfortanceBox>
             {isModify && (
               <select
-                name="importance"
+                name='importance'
                 value={form.importance}
                 onChange={handleChange}
               >
@@ -76,7 +76,7 @@ export default function TodoItem({
           {!isModify ? (
             <Text>{todo.task}</Text>
           ) : (
-            <TaskInput name="task" value={form.task} onChange={handleChange} />
+            <TaskInput name='task' value={form.task} onChange={handleChange} />
           )}
         </TaskTitleBox>
         <StatusBox>
@@ -119,10 +119,10 @@ export default function TodoItem({
 }
 
 const Container = styled.div<{ isModify: boolean }>`
-  ${({ theme }) => theme.flexSet("space-between")};
+  ${({ theme }) => theme.flexSet('space-between')};
   width: 100%;
   height: 55px;
-  min-height: ${({ isModify }) => (isModify ? "90px" : "70px")};
+  min-height: ${({ isModify }) => (isModify ? '90px' : '70px')};
   margin: 10px 0;
   padding: 10px;
   background-color: white;
@@ -131,7 +131,7 @@ const Container = styled.div<{ isModify: boolean }>`
 `;
 
 const TaskTitleBox = styled.div`
-  ${({ theme }) => theme.flexSet("flex-start")};
+  ${({ theme }) => theme.flexSet('flex-start')};
 `;
 
 const ImfortanceStatus = styled.div`
@@ -139,7 +139,7 @@ const ImfortanceStatus = styled.div`
 `;
 
 const TaskBox = styled.div`
-  ${({ theme }) => theme.flexSet("space-between", "", "column")};
+  ${({ theme }) => theme.flexSet('space-between', '', 'column')};
   height: 100%;
 `;
 
@@ -155,11 +155,11 @@ const TaskInput = styled.input`
 `;
 
 const ImfortanceBox = styled.div`
-  ${({ theme }) => theme.flexSet("flex-start")};
+  ${({ theme }) => theme.flexSet('flex-start')};
 `;
 
 const StatusBox = styled.div`
-  ${({ theme }) => theme.flexSet("flex-start")};
+  ${({ theme }) => theme.flexSet('flex-start')};
 `;
 
 const Status = styled.div<{
@@ -171,38 +171,54 @@ const Status = styled.div<{
   max-width: 80px;
   margin: 6px 6px 0 0;
   padding: 2px 4px 4px;
-  color: rgb(230 32 32);
-  border: 1px solid rgb(230 32 32);
   border-radius: 3px;
+
+  ${({ isStatus }) => {
+    if (isStatus === 'pending') {
+      return css`
+        color: rgb(29 162 58);
+        border: 1px solid rgb(29 162 58);
+      `;
+    }
+    if (isStatus === 'ongoing') {
+      return css`
+        color: rgb(42 67 191);
+        border: 1px solid rgb(38 68 220);
+      `;
+    }
+    if (isStatus === 'completed') {
+      return css`
+        color: rgb(230 32 32);
+        border: 1px solid rgb(230 32 32);
+      `;
+    }
+  }}
 
   ${({ isModify, isStatus, currentStatus }) => {
     if (isModify) {
-      if (isStatus === "pending" && isStatus === currentStatus) {
+      if (isStatus === 'pending' && isStatus === currentStatus) {
         return css`
           color: white;
-          cursor: pointer;
-          border: green;
-          background-color: green;
+          border: 1px solid rgb(29 162 58);
+          background-color: rgb(29 162 58);
         `;
       }
-      if (isStatus === "ongoing" && isStatus === currentStatus) {
+      if (isStatus === 'ongoing' && isStatus === currentStatus) {
         return css`
           color: white;
-          cursor: pointer;
-          border: yellow;
-          background-color: yellow;
+          border: 1px solid rgb(38 68 220);
+          background-color: rgb(38 68 220);
         `;
       }
-      if (isStatus === "completed" && isStatus === currentStatus) {
+      if (isStatus === 'completed' && isStatus === currentStatus) {
         return css`
           color: white;
-          cursor: pointer;
-          border: red;
-          background-color: red;
+          border: 1px solid rgb(230 32 32);
+          background-color: rgb(230 32 32);
         `;
       }
     }
-  }})
+  }}
 `;
 
 const ModifyButton = styled.button`
@@ -230,7 +246,7 @@ const DeleteButton = styled.button`
 `;
 
 const ButtonBox = styled.div`
-  ${({ theme }) => theme.flexSet("flex-end", "flex-end")};
+  ${({ theme }) => theme.flexSet('flex-end', 'flex-end')};
   height: 100%;
   cursor: pointer;
 `;
@@ -242,11 +258,7 @@ const ConformButton = styled.button`
   border-radius: 5px;
   padding: 10px;
   color: white;
-  background-color: hsl(
-    190.7142857142857,
-    75.67567567567568%,
-    29.01960784313725%
-  );
+  background-color: rgb(18 110 130);
   opacity: 0.5;
 `;
 

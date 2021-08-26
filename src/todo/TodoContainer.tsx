@@ -52,12 +52,14 @@ const TodoContainer: React.FC = () => {
 
   return (
     <Container>
-      <TodoHeader createTodo={createTodo} />
-      <TodoList
-        removeTodo={removeTodo}
-        changeStatus={changeStatus}
-        todo={todos}
-      />
+      <Wrap>
+        <TodoHeader createTodo={createTodo} />
+        <TodoList
+          removeTodo={removeTodo}
+          changeStatus={changeStatus}
+          todo={todos}
+        />
+      </Wrap>
     </Container>
   );
 };
@@ -65,6 +67,12 @@ const TodoContainer: React.FC = () => {
 export default TodoContainer;
 
 const Container = styled.div`
-  ${({ theme }) => theme.flexSet()};
+  ${({ theme }) => theme.flexSet('center', 'center', 'column')};
+  width: 100%;
+  margin-top: 50px;
   /* color: rgb(18, 110, 130); */
+`;
+
+const Wrap = styled.div`
+  width: 500px;
 `;
