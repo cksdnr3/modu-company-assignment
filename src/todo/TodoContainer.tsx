@@ -27,7 +27,7 @@ const TodoContainer: React.FC = () => {
 
   const [filterTags, setFilterTags] = useState(initialFilteredTags);
   const filterToggle = useToggle();
-  const { toggle, handleToggle } = filterToggle;
+  const { toggle } = filterToggle;
 
   const handleFilter = (filter: FilterTagsType): void => {
     setFilterTags((prev: FilterTagsType) => ({
@@ -51,7 +51,8 @@ const TodoContainer: React.FC = () => {
       <TodoList
         removeTodo={removeTodo}
         changeStatus={changeStatus}
-        todo={todos}
+        todo={filter(filterTags, todos)}
+        {...filterToggle}
       />
     </Container>
   );

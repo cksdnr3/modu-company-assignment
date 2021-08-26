@@ -2,8 +2,6 @@ import { useState } from 'react';
 
 export interface useToggleReturnTypes {
     toggle: boolean;
-    handleOpen?: () => void;
-    handleClose?: () => void;
     handleToggle: () => void;
 }
 

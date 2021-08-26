@@ -48,7 +48,7 @@ export default function TodoItem({
   const handleSubmit = (): void => {
     changeStatus({
       ...form,
-      importance: Number(form.importance),
+      importance: form.importance,
     });
     setIsModify(false);
   };
@@ -67,7 +67,7 @@ export default function TodoItem({
               >
                 {impotantRank.map((value) => (
                   <option key={value} value={value}>
-                    {importance[value]}
+                    {value}
                   </option>
                 ))}
               </select>

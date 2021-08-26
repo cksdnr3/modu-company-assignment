@@ -37,6 +37,7 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({ toggle, handleToggle, handleFil
         <Modal
         handleToggle={handleToggle} 
         toggle={toggle}
+        width="400px"
         >
             <FilterForm onSubmit={handleSubmit}>
                 <TodoFilterContainer>
@@ -44,22 +45,26 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({ toggle, handleToggle, handleFil
                     <Content>
                         <FieldSet>
                             {Object.entries(form).map(([key, tags]) => (
-                                    <div key={key}>
-                                        <Legend>{key}</Legend>
-                                        {Object.keys(tags).map(tag => {
-                                            const checked = form[key][tag];
-                                            return (
-                                                <Label 
+                                <FilterDiv key={key}>
+                                    <Legend>{key}</Legend>
+                                    {Object.keys(tags).map((tag, idx) => {
+                                        const checked = form[key][tag];
+                                        return (
+                                            <TagDiv>
+                                                <Label
+                                                htmlFor={`${idx}`}
+                                                tag={tag}
                                                 select={checked}
-                                                key={tag}>{tag.toUpperCase()}
-                                                    <CheckBox
-                                                    checked={checked}
-                                                    type="checkbox"
-                                                    onChange={() => handleCheckBoxClick(key, tag)} />
-                                                </Label>
-                                            )
-                                        })}
-                                    </div>
+                                                key={tag} />
+                                                <CheckBox
+                                                id={`${idx}`}
+                                                checked={checked}
+                                                type="checkbox"
+                                                onChange={() => handleCheckBoxClick(key, tag)} />
+                                                <Text>{tag}</Text>
+                                            </TagDiv>
+                                        )})}
+                                </FilterDiv>
                                 ))}
                         </FieldSet>
                     </Content>
@@ -103,36 +108,77 @@ const Header = styled.div`
 
 const Content = styled.div`
     flex: 1;
-    overflow-y: auto;
 `;
 
 const FieldSet = styled.fieldset`
-    width: 100%;
-    margin-bottom: 13px;
+
 `
 
 const Legend = styled.legend`
+    color: #d3d3d3;
     font-weight: bold;
-    font-size: 19px;
+    font-size: 18px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #d3d3d3;
     margin-bottom: 9px;
 `
 
-const Label = styled.label<{select: boolean}>`
+type LabelPropsTypes = {
+    select: boolean;
+    key: string;
+    tag: string;
+}
+
+const Label = styled.label<LabelPropsTypes>`
     font-size: 15px;
     &:hover {
         color: #0080ff;
     }
-    ${props => 
-        props.select &&
-        css`
-            &:hover: white;
-            color: #0080ff;
-        `
+    display: inline-block;
+    border-radius: 5px;
+    margin-right: 6px;
+    cursor: pointer;
+
+    ${props => {
+        switch (props.tag) {
+            case 'pending':
+                return css`
+                width: 17px;
+                height: 17px;
+                border: 2px solid green;
+                background-color: ${props.select && 'green'};
+                `
+            case 'ongoing':
+                return css`
+                width: 17px;
+                height: 17px;
+                border: 2px solid yellow;
+                background-color: ${props.select && 'yellow'};
+
+                `
+            case 'completed':
+                return css`
+                width: 17px;
+                height: 17px;
+                border: 2px solid red;
+                background-color: ${props.select && 'red'};
+                `
+            default :
+                return css`
+                width: 17px;
+                height: 17px;
+                border: 2px solid #d3d3d3;
+                background-color: ${props.select && '#d3d3d3'};
+                `
+        }
+    }
     }
 `;
 
 const CheckBox = styled.input`
     margin: 0 7px 0 2px;
+    display: none;
+    
 `;
 
 const Footer = styled.div`
@@ -145,6 +191,20 @@ const Button = styled.button`
     &:hover {
         color: #0080ff;
     }
+`
+
+const Text = styled.span`
+    font-weight: bold;
+`
+
+const TagDiv = styled.div`
+    display: flex;
+    margin-bottom: 12px;
+    vertical-align: middle;
+`
+
+const FilterDiv = styled.div`
+    margin-bottom: 10px;
 `
 
 export default TodoFilter;

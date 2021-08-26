@@ -41,13 +41,9 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     <Contianer>
       <InsertForm onSubmit={onSubmit}>
         <SelectDiv>
-<<<<<<< HEAD
           중요도 - {importance[form.importance as EnumTyps]}
           <Select name="importance" value={form.importance} onChange={onChange}>
-=======
-          중요도 - {importance[form.importance]}
-          <Select name='importance' value={form.importance} onChange={onChange}>
->>>>>>> f14aeba9c69bd04fbedbe1b19aa81b782d885edf
+
             {impotantRank.map((value) => (
               <option key={value} value={value}>
                 {value.toUpperCase()}
