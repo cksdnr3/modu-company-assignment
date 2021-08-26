@@ -1,10 +1,10 @@
-import React from 'react';
-import { Todo } from 'todo/TodoService';
-import TodoItem from 'components/TodoItem/TodoItem';
-import styled from 'styled-components';
+import React from "react";
+import { Todo } from "todo/TodoService";
+import TodoItem from "components/TodoItem/TodoItem";
+import styled from "styled-components";
 
 interface TodoListProps {
-  changeStatus: (id: number) => void;
+  changeStatus: (todo: Todo) => void;
   removeTodo: (id: number) => void;
   todo: Todo[];
 }

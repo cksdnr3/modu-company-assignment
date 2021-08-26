@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { formatDate } from 'utils/formatDate';
-import dummyData from 'assets/data/dummyData.json';
+import { useState, useEffect } from "react";
+import { formatDate } from "utils/formatDate";
+import dummyData from "assets/data/dummyData.json";
 
 export enum status {
-  PENDING = 'pending',
-  ONGOING = 'ongoing',
-  COMPLETED = 'completed',
+  PENDING = "pending",
+  ONGOING = "ongoing",
+  COMPLETED = "completed",
 }
 
 export enum importance {
@@ -47,14 +47,17 @@ export const useTodo = () => {
     ]);
   };
 
-  // Task 삭제
   const removeTodo = (id: number) => {
-    setTodos((perv) => perv.filter((todo) => todo.id !== id));
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
-  // Task 상태 변경
-  const changeStatus = () => {
+  const changeStatus = (todo: Todo) => {
     const updatedAt = formatDate(new Date());
+    setTodos((prev) =>
+      prev.map((prevTodo) =>
+        prevTodo.id === todo.id ? { ...todo, updatedAt } : prevTodo
+      )
+    );
   };
 
   useEffect(() => {
@@ -66,13 +69,20 @@ export const useTodo = () => {
   }, [todos]);
 
   const loadData = () => {
-    let data = localStorage.getItem('todos');
+    let data = localStorage.getItem("todos");
     setTodos(JSON.parse(data!) || [...dummyData]);
   };
 
   const saveData = () => {
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(todos));
   };
 
-  return { todos, createTodo, removeTodo, changeStatus, loadData, saveData };
+  return {
+    todos,
+    createTodo,
+    removeTodo,
+    changeStatus,
+    loadData,
+    saveData,
+  };
 };
