@@ -3,6 +3,7 @@ import Modal from 'components/Modal';
 import styled, { css } from 'styled-components';
 import { useToggleReturnTypes } from 'hooks/useToggle';
 import { FilterTagsType } from 'utils/filter';
+import CloseIcon from 'components/CloseIcon';
 
 interface TodoFilterTypes extends useToggleReturnTypes {
     filterTags: FilterTagsType;
@@ -41,6 +42,12 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({ toggle, handleToggle, handleFil
         >
             <FilterForm onSubmit={handleSubmit}>
                 <TodoFilterContainer>
+                    <Icon>
+                        <CloseIcon 
+                        width="18"
+                        height="18"
+                        handler={handleToggle} />
+                    </Icon>
                     <Header>Filter</Header>
                     <Content>
                         <FieldSet>
@@ -62,7 +69,7 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({ toggle, handleToggle, handleFil
                                                 checked={checked}
                                                 type="checkbox"
                                                 onChange={() => handleCheckBoxClick(key, tag)} />
-                                                <BoldText>{tag}</BoldText>
+                                                <BoldText>{tag.toUpperCase()}</BoldText>
                                             </>
                                         )})}
                                     </TagDiv>
@@ -185,5 +192,8 @@ const TagDiv = styled.div`
 const FilterDiv = styled.div`
     margin-bottom: 30px;
 `
-
+const Icon = styled.span`
+    display: flex;
+    flex-direction: row-reverse;
+`
 export default TodoFilter;
