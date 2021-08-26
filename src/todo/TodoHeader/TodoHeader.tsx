@@ -16,14 +16,8 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
     if (!form.task.trim()) return;
-
-    createTodo({
-      task: form.task,
-      importance: Number(form.importance),
-    });
-
+    createTodo(form);
     setForm({ task: '', importance: importance.LOW });
   };
 
@@ -32,44 +26,68 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
   ): void => {
     const { name, value } = e.target;
 
-    console.log(name, value);
     setForm({ ...form, [name]: value });
   };
 
-  const changeToIcon = (value: number) => {
-    if (value === 0) return ` 🔴 ${importance[value]}`;
-    if (value === 1) return ` 🟡 ${importance[value]}`;
-    if (value === 2) return ` 🟢 ${importance[value]}`;
+  const changeToIcon = (value: string) => {
+    if (value === 'LOW') return `🔴 ${importance[value]}`;
+    if (value === 'MID') return `🟡 ${importance[value]}`;
+    if (value === 'HIGH') return `🟢 ${importance[value]}`;
   };
 
   return (
-    <Contianer onSubmit={onSubmit}>
-      <Select name='importance' onChange={onChange}>
-        <option value='none'>중요도</option>
-        {impotantRank.map((value) => (
-          <option key={value} value={value}>
-            {changeToIcon(value)}
-          </option>
-        ))}
-      </Select>
-      <Input
-        name='task'
-        type='text'
-        autoFocus
-        onChange={onChange}
-        value={form.task}
-        placeholder='할 일을 입력 후, Enter 를 누르세요'
-      />
-      <Button>ADD</Button>
+    <Contianer>
+      <TextBox>
+        <Icon>📅</Icon>
+        <Text>Todo List</Text>
+      </TextBox>
+      <CreactBox onSubmit={onSubmit}>
+        <Select name='importance' value={form.importance} onChange={onChange}>
+          <option value='none'>중요도</option>
+          {impotantRank.map((value) => (
+            <option key={value} value={value}>
+              {changeToIcon(value)}
+            </option>
+          ))}
+        </Select>
+        <Input
+          name='task'
+          type='text'
+          autoFocus
+          onChange={onChange}
+          value={form.task}
+          placeholder='할 일을 입력 후, Enter 를 누르세요'
+        />
+        <Button>ADD</Button>
+      </CreactBox>
     </Contianer>
   );
 };
 
-const Contianer = styled.form`
-  ${({ theme }) => theme.flexSet()};
-  width: 100%;
+const Contianer = styled.div`
+  ${({ theme }) => theme.flexSet('', '', 'column')};
   padding: 20px;
   background-color: #f5f5f7;
+`;
+
+const TextBox = styled.div`
+  ${({ theme }) => theme.flexSet('flex-start')};
+  margin-bottom: 20px;
+`;
+
+const Icon = styled.div`
+  font-size: 30px;
+  margin-right: 10px;
+`;
+
+const Text = styled.div`
+  font-size: 30px;
+  font-weight: 500;
+`;
+
+const CreactBox = styled.form`
+  ${({ theme }) => theme.flexSet()};
+  width: 100%;
 `;
 
 const Select = styled.select`
@@ -82,13 +100,14 @@ const Select = styled.select`
 
 const Input = styled.input`
   flex: 2;
-  height: 100%;
+  height: 39px;
   margin: 0px;
   padding: 0px;
   padding: 10px;
   margin-right: 10px;
   background-color: #fff;
   border-radius: 0 5px 5px 0;
+  border-left: 1px solid rgb(226 226 226);
 `;
 
 const Button = styled.button`

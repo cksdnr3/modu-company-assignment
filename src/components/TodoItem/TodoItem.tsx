@@ -25,7 +25,7 @@ export default function TodoItem({
     setIsModify(true);
     setForm(todo);
   };
-
+  console.log(impotantRank);
   const handleRemove = (id: number): void => removeTodo(id);
 
   const handleChange = (
@@ -46,39 +46,43 @@ export default function TodoItem({
   };
 
   const handleSubmit = (): void => {
-    changeStatus({
-      ...form,
-      importance: Number(form.importance),
-    });
+    changeStatus(form);
     setIsModify(false);
+  };
+
+  const changeToIcon = (value: string) => {
+    if (value === 'LOW') return `🔴`;
+    if (value === 'MID') return `🟡`;
+    if (value === 'HIGH') return `🟢`;
   };
 
   return (
     <Container isModify={isModify}>
       <TaskBox>
-        <TaskTitleBox>
-          <ImfortanceStatus>{todo.importance}</ImfortanceStatus>
-          <ImfortanceBox>
-            {isModify && (
-              <select
-                name='importance'
-                value={form.importance}
-                onChange={handleChange}
-              >
-                {impotantRank.map((value) => (
-                  <option key={value} value={value}>
-                    {importance[value]}
-                  </option>
-                ))}
-              </select>
-            )}
-          </ImfortanceBox>
+        <ImfortanceBox>
           {!isModify ? (
-            <Text>{todo.task}</Text>
+            <ImfortanceStatus>{changeToIcon(todo.importance)}</ImfortanceStatus>
           ) : (
-            <TaskInput name='task' value={form.task} onChange={handleChange} />
+            <Select
+              name='importance'
+              value={form.importance}
+              onChange={handleChange}
+            >
+              {impotantRank.map((value) => (
+                <option key={value} value={value}>
+                  {changeToIcon(value)}
+                </option>
+              ))}
+            </Select>
           )}
-        </TaskTitleBox>
+        </ImfortanceBox>
+        {!isModify ? (
+          <Text>{todo.task}</Text>
+        ) : (
+          <TaskInput name='task' value={form.task} onChange={handleChange} />
+        )}
+      </TaskBox>
+      <Wrap>
         <StatusBox>
           {isModify ? (
             statusRank.map((status) => (
@@ -98,40 +102,37 @@ export default function TodoItem({
             </Status>
           )}
         </StatusBox>
-      </TaskBox>
-      {!isModify ? (
-        <div>
-          <ModifyButton onClick={() => hadleEdit(todo.id)}>
-            <Edit />
-          </ModifyButton>
-          <DeleteButton onClick={() => handleRemove(todo.id)}>
-            <Trash />
-          </DeleteButton>
-        </div>
-      ) : (
-        <ButtonBox>
-          <ConformButton onClick={handleSubmit}>확인</ConformButton>
-          <CancleButton onClick={() => setIsModify(false)}>취소</CancleButton>
-        </ButtonBox>
-      )}
+        {!isModify ? (
+          <div>
+            <ModifyButton onClick={() => hadleEdit(todo.id)}>
+              <Edit />
+            </ModifyButton>
+            <DeleteButton onClick={() => handleRemove(todo.id)}>
+              <Trash />
+            </DeleteButton>
+          </div>
+        ) : (
+          <ButtonBox>
+            <ConformButton onClick={handleSubmit}>확인</ConformButton>
+            <CancleButton onClick={() => setIsModify(false)}>취소</CancleButton>
+          </ButtonBox>
+        )}
+      </Wrap>
     </Container>
   );
 }
 
 const Container = styled.div<{ isModify: boolean }>`
-  ${({ theme }) => theme.flexSet('space-between')};
+  ${({ theme }) => theme.flexSet('space-between', '', 'column')};
   width: 100%;
   height: 55px;
-  min-height: ${({ isModify }) => (isModify ? '90px' : '70px')};
+  min-height: ${({ isModify }) => (isModify ? '110px' : '70px')};
   margin: 10px 0;
   padding: 10px;
   background-color: white;
   border-radius: 5px;
+  cursor: default;
   transition: 0.3s;
-`;
-
-const TaskTitleBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
 `;
 
 const ImfortanceStatus = styled.div`
@@ -139,23 +140,43 @@ const ImfortanceStatus = styled.div`
 `;
 
 const TaskBox = styled.div`
-  ${({ theme }) => theme.flexSet('space-between', '', 'column')};
+  ${({ theme }) => theme.flexSet('flex-start')};
   height: 100%;
 `;
 
 const Text = styled.div`
+  flex: 1;
   font-size: 16px;
   font-weight: 500;
+  overflow: hidden;
 `;
 
 const TaskInput = styled.input`
-  font-size: 18px;
+  flex: 1;
+  font-size: 16px;
   font-weight: 500;
   padding-left: 5px;
+  box-shadow: 0 1px 2px 1px #0000001f;
+  height: 30px;
+  border-radius: 5px;
 `;
 
 const ImfortanceBox = styled.div`
   ${({ theme }) => theme.flexSet('flex-start')};
+`;
+const Select = styled.select`
+  width: 50px;
+  height: 30px;
+  padding: 6px;
+  margin-right: 8px;
+  border: 0px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 1px #0000001f;
+`;
+
+const Wrap = styled.div`
+  ${({ theme }) => theme.flexSet('space-between')};
+  margin-top: 10px;
 `;
 
 const StatusBox = styled.div`
@@ -169,52 +190,34 @@ const Status = styled.div<{
 }>`
   ${({ theme }) => theme.flexSet()};
   max-width: 80px;
-  margin: 6px 6px 0 0;
   padding: 2px 4px 4px;
+  margin-right: 6px;
   border-radius: 3px;
+  color: rgb(18 110 130);
+  border: 1px solid rgb(18 110 130);
+  transition: 0.2s;
+  opacity: 0.7;
 
-  ${({ isStatus }) => {
-    if (isStatus === 'pending') {
-      return css`
-        color: rgb(29 162 58);
-        border: 1px solid rgb(29 162 58);
-      `;
-    }
-    if (isStatus === 'ongoing') {
-      return css`
-        color: rgb(42 67 191);
-        border: 1px solid rgb(38 68 220);
-      `;
-    }
-    if (isStatus === 'completed') {
-      return css`
-        color: rgb(230 32 32);
-        border: 1px solid rgb(230 32 32);
-      `;
-    }
-  }}
+  &:hover {
+    ${({ isModify }) => {
+      if (isModify) {
+        return css`
+          color: white;
+          border: 1px solid rgb(18 110 130);
+          background-color: rgb(18 110 130);
+          cursor: pointer;
+        `;
+      }
+    }}
+  }
 
   ${({ isModify, isStatus, currentStatus }) => {
     if (isModify) {
-      if (isStatus === 'pending' && isStatus === currentStatus) {
+      if (isStatus === currentStatus) {
         return css`
           color: white;
-          border: 1px solid rgb(29 162 58);
-          background-color: rgb(29 162 58);
-        `;
-      }
-      if (isStatus === 'ongoing' && isStatus === currentStatus) {
-        return css`
-          color: white;
-          border: 1px solid rgb(38 68 220);
-          background-color: rgb(38 68 220);
-        `;
-      }
-      if (isStatus === 'completed' && isStatus === currentStatus) {
-        return css`
-          color: white;
-          border: 1px solid rgb(230 32 32);
-          background-color: rgb(230 32 32);
+          border: 1px solid rgb(18 110 130);
+          background-color: rgb(18 110 130);
         `;
       }
     }
@@ -265,5 +268,5 @@ const ConformButton = styled.button`
 const CancleButton = styled(ConformButton)`
   margin-left: 6px;
   background-color: rgb(216, 227, 231);
-  color: gray;
+  color: rgb(55 55 55);
 `;
