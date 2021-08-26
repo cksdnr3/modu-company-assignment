@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^17.0.19"
+    "@types/react": "^17.0.19",
+    "file-loader": "^6.1.1"
   }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { formatDate } from "utils/formatDate";
-import dummyData from "assets/dummyData.json";
+import dummyData from "assets/data/dummyData.json";
 
 export enum status {
   PENDING = "pending",
@@ -47,12 +47,17 @@ export const useTodo = () => {
     ]);
   };
 
-  // Task 삭제
-  const removeTodo = () => {};
+  const removeTodo = (id: number) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
 
-  // Task 상태 변경
-  const changeStatus = () => {
+  const changeStatus = (todo: Todo) => {
     const updatedAt = formatDate(new Date());
+    setTodos((prev) =>
+      prev.map((prevTodo) =>
+        prevTodo.id === todo.id ? { ...todo, updatedAt } : prevTodo
+      )
+    );
   };
 
   useEffect(() => {
@@ -65,13 +70,19 @@ export const useTodo = () => {
 
   const loadData = () => {
     let data = localStorage.getItem("todos");
-    if (data === null) return;
-    setTodos(JSON.parse(data));
+    setTodos(JSON.parse(data!) || [...dummyData]);
   };
 
   const saveData = () => {
     localStorage.setItem("todos", JSON.stringify(todos));
   };
 
-  return { todos, createTodo };
+  return {
+    todos,
+    createTodo,
+    removeTodo,
+    changeStatus,
+    loadData,
+    saveData,
+  };
 };

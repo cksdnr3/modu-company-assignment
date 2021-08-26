@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { CreateTodo, importance } from "todo/TodoService";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { CreateTodo, importance } from 'todo/TodoService';
 
 const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
 
@@ -12,9 +12,10 @@ type EnumTyps = keyof typeof importance
 
 const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
   const [form, setForm] = useState<CreateTodo>({
-    task: "",
+    task: '',
     importance: importance.LOW,
   });
+  console.log(impotantRank);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -26,7 +27,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
       importance: form.importance,
     });
 
-    setForm({ task: "", importance: importance.LOW });
+    setForm({ task: '', importance: importance.LOW });
   };
 
   const onChange = (
@@ -40,8 +41,13 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     <Contianer>
       <InsertForm onSubmit={onSubmit}>
         <SelectDiv>
+<<<<<<< HEAD
           중요도 - {importance[form.importance as EnumTyps]}
           <Select name="importance" value={form.importance} onChange={onChange}>
+=======
+          중요도 - {importance[form.importance]}
+          <Select name='importance' value={form.importance} onChange={onChange}>
+>>>>>>> f14aeba9c69bd04fbedbe1b19aa81b782d885edf
             {impotantRank.map((value) => (
               <option key={value} value={value}>
                 {value.toUpperCase()}
@@ -50,12 +56,12 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
           </Select>
         </SelectDiv>
         <Input
-          name="task"
-          type="text"
+          name='task'
+          type='text'
           autoFocus
           onChange={onChange}
           value={form.task}
-          placeholder="할 일을 입력 후, Enter 를 누르세요"
+          placeholder='할 일을 입력 후, Enter 를 누르세요'
         />
         <Button>ADD</Button>
       </InsertForm>
@@ -92,7 +98,7 @@ const SelectDiv = styled.div`
   border: 1px solid gray;
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 45%;
     right: 10px;

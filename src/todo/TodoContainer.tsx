@@ -5,6 +5,9 @@ import TodoHeader from "todo/TodoHeader/TodoHeader";
 import FilterIcon from "components/FilterIcon";
 import TodoFilter from "./TodoFilter/TodoFilter";
 import useToggle from "hooks/useToggle";
+import TodoList from "components/TodoList/TodoList";
+import styled from "styled-components";
+
 
 const initialFilteredTags: FilterTagsType = {
   status: {
@@ -20,7 +23,8 @@ const initialFilteredTags: FilterTagsType = {
 };
 
 const TodoContainer: React.FC = () => {
-  const { todos, createTodo } = useTodo();
+  const { todos, createTodo, removeTodo, changeStatus } = useTodo();
+
   const [filterTags, setFilterTags] = useState(initialFilteredTags);
   const filterToggle = useToggle();
   const { toggle, handleToggle } = filterToggle;
@@ -33,7 +37,7 @@ const TodoContainer: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <TodoHeader createTodo={createTodo} />
       {
         toggle 
@@ -44,8 +48,18 @@ const TodoContainer: React.FC = () => {
           />
       }
 
-    </>
+      <TodoList
+        removeTodo={removeTodo}
+        changeStatus={changeStatus}
+        todo={todos}
+      />
+    </Container>
   );
 };
 
 export default TodoContainer;
+
+const Container = styled.div`
+  ${({ theme }) => theme.flexSet()};
+  /* color: rgb(18, 110, 130); */
+`;
