@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import filter, { FilterTagsType } from "utils/filter";
 import { useTodo, status, importance } from "todo/TodoService";
 import TodoHeader from "todo/TodoHeader/TodoHeader";
-import FilterIcon from "components/FilterIcon";
 import TodoFilter from "./TodoFilter/TodoFilter";
 import useToggle from "hooks/useToggle";
 import TodoList from "components/TodoList/TodoList";
