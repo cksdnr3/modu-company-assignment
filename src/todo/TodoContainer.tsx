@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import filter, { FilterTagsType } from "utils/filter";
 import { useTodo, status, importance } from "todo/TodoService";
@@ -6,7 +7,6 @@ import TodoFilter from "./TodoFilter/TodoFilter";
 import useToggle from "hooks/useToggle";
 import TodoList from "components/TodoList/TodoList";
 import styled from "styled-components";
-
 
 const initialFilteredTags: FilterTagsType = {
   status: {
@@ -20,6 +20,7 @@ const initialFilteredTags: FilterTagsType = {
     [importance.HIGH]: false,
   },
 };
+
 
 const TodoContainer: React.FC = () => {
   const { todos, createTodo, removeTodo, changeStatus } = useTodo();
@@ -60,6 +61,12 @@ const TodoContainer: React.FC = () => {
 export default TodoContainer;
 
 const Container = styled.div`
-  ${({ theme }) => theme.flexSet()};
-  /* color: rgb(18, 110, 130); */
+  ${({ theme }) => theme.flexSet('center', 'center', 'column')};
+  width: 100%;
+  margin-top: 50px;
+`;
+
+const Wrap = styled.div`
+  width: 500px;
+  box-shadow: 1px 5px 8px 2px #0000001f;
 `;

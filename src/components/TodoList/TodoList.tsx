@@ -37,16 +37,16 @@ export default function TodoList({
 }
 
 const Container = styled.div`
-  width: 500px;
+  width: 100%;
   height: 600px;
   padding: 30px;
   background-color: rgb(216, 227, 231);
-  overflow-y: scroll;
 `;
 
 const Wrap = styled.div`
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
 `;
 
 const Icon = styled.span`
