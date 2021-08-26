@@ -9,9 +9,9 @@ export enum status {
 }
 
 export enum importance {
-  LOW = 'low',
-  MID = 'mid',
-  HIGH = 'high',
+  LOW = 'LOW',
+  MID = 'MID',
+  HIGH = 'HIGH',
 
 }
 
@@ -27,7 +27,7 @@ export type Todo = {
 
 export type CreateTodo = {
   task: string;
-  importance: string;
+  importance: string; 
 };
 
 export const useTodo = () => {

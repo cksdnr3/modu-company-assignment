@@ -8,8 +8,6 @@ interface TodoHeaderProps {
   createTodo: (todo: CreateTodo) => void;
 }
 
-type EnumTyps = keyof typeof importance
-
 const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
   const [form, setForm] = useState<CreateTodo>({
     task: '',

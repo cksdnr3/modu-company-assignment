@@ -25,7 +25,6 @@ export default function TodoItem({
     setIsModify(true);
     setForm(todo);
   };
-  console.log(impotantRank);
   const handleRemove = (id: number): void => removeTodo(id);
 
   const handleChange = (

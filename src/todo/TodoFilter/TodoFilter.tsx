@@ -102,6 +102,7 @@ const TodoFilterContainer = styled.div`
 const FilterForm = styled.form``
 
 const Header = styled.div`
+    color: rgb(18 110 130);
     font-size: 26px;
     font-weight: bold;
     text-align: center;
@@ -139,12 +140,12 @@ const Label = styled.label<LabelPropsTypes>`
     ${props => {
         function colorGenerator() {
             const color: {[tag: string]: string} = {
-                pending: 'green',
-                ongoing: 'yellow',
-                completed: 'red',
+                LOW: 'red',
+                MID: 'yellow',
+                HIGH: 'green',
             }
 
-            return color[props.tag] || '#d3d3d3';
+            return color[props.tag] || 'rgb(18 110 130)';
         }
         return css`
             border: 2px solid ${colorGenerator()};
@@ -167,7 +168,7 @@ const Button = styled.button`
     width: 100%;
     height: 30px;
     &:hover {
-        color: #0080ff;
+        color: rgb(18 110 130);
     }
 `
 
