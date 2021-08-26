@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ReactComponent as Edit } from "assets/images/edit.svg";
 import { ReactComponent as Trash } from "assets/images/trash.svg";
 import { Todo, status, importance } from "todo/TodoService";
@@ -86,6 +86,7 @@ export default function TodoItem({
                 key={status}
                 isModify={isModify}
                 isStatus={status}
+                currentStatus={form.status}
                 onClick={() => handleStatus(status)}
               >
                 {status}
@@ -161,7 +162,11 @@ const StatusBox = styled.div`
   ${({ theme }) => theme.flexSet("flex-start")};
 `;
 
-const Status = styled.div<{ isModify: boolean; isStatus: string }>`
+const Status = styled.div<{
+  isModify: boolean;
+  isStatus: string;
+  currentStatus?: string;
+}>`
   ${({ theme }) => theme.flexSet()};
   max-width: 80px;
   margin: 6px 6px 0 0;
@@ -169,23 +174,35 @@ const Status = styled.div<{ isModify: boolean; isStatus: string }>`
   color: rgb(230 32 32);
   border: 1px solid rgb(230 32 32);
   border-radius: 3px;
-  /* rgb(29 162 58); 초록 */
-  /* color: rgb(42 67 191);
-    border: 1px solid rgb(38 68 220); */
-  ${({ isModify, isStatus }) =>
-    isModify &&
-    isStatus === "pending" &&
-    `color: white;
-    border: 1px solide rgb(230 32 32);
-    background-color: rgb(230 32 32);
-    cursor: pointer;
-    &:hover {
-    color: white;
-    border: 1px solide rgb(230 32 32);
-    background-color: rgb(230 32 32);
-    cursor: pointer;
+
+  ${({ isModify, isStatus, currentStatus }) => {
+    if (isModify) {
+      if (isStatus === "pending" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: green;
+          background-color: green;
+        `;
+      }
+      if (isStatus === "ongoing" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: yellow;
+          background-color: yellow;
+        `;
+      }
+      if (isStatus === "completed" && isStatus === currentStatus) {
+        return css`
+          color: white;
+          cursor: pointer;
+          border: red;
+          background-color: red;
+        `;
+      }
     }
-  `}
+  }})
 `;
 
 const ModifyButton = styled.button`
