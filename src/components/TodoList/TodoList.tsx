@@ -20,7 +20,12 @@ export default function TodoList({
 }: TodoListProps) {
   return (
     <Container>
-      <Icon onClick={handleToggle}><FilterIcon /></Icon>
+      <Reverse>
+        <FilterIcon 
+        width="27"
+        height="27"
+        handleToggle={handleToggle} />
+      </Reverse>
       <Wrap>
         {todo &&
           todo.map((item) => (
@@ -49,7 +54,7 @@ const Wrap = styled.div`
   overflow-y: scroll;
 `;
 
-const Icon = styled.span`
+const Reverse = styled.span`
   display: flex;
   flex-direction: row-reverse;
 `
