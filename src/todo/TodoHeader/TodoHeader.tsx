@@ -8,6 +8,8 @@ interface TodoHeaderProps {
   createTodo: (todo: CreateTodo) => void;
 }
 
+type EnumTyps = keyof typeof importance
+
 const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
   const [form, setForm] = useState<CreateTodo>({
     task: "",
@@ -21,7 +23,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
 
     createTodo({
       task: form.task,
-      importance: Number(form.importance),
+      importance: form.importance,
     });
 
     setForm({ task: "", importance: importance.LOW });
@@ -38,11 +40,11 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     <Contianer>
       <InsertForm onSubmit={onSubmit}>
         <SelectDiv>
-          중요도 - {importance[form.importance]}
+          중요도 - {importance[form.importance as EnumTyps]}
           <Select name="importance" value={form.importance} onChange={onChange}>
             {impotantRank.map((value) => (
               <option key={value} value={value}>
-                {importance[value]}
+                {value.toUpperCase()}
               </option>
             ))}
           </Select>

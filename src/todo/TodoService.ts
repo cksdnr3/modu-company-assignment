@@ -9,9 +9,9 @@ export enum status {
 }
 
 export enum importance {
-  LOW,
-  MID,
-  HIGH,
+  LOW = 'low',
+  MID = 'mid',
+  HIGH = 'high',
 }
 
 export type Todo = {
@@ -19,14 +19,14 @@ export type Todo = {
   id: number;
   task: string;
   status: string;
-  importance: number;
+  importance: string;
   createdAt: string;
   updatedAt?: string;
 };
 
 export type CreateTodo = {
   task: string;
-  importance: number;
+  importance: string;
 };
 
 export const useTodo = () => {
@@ -65,7 +65,8 @@ export const useTodo = () => {
 
   const loadData = () => {
     let data = localStorage.getItem("todos");
-    setTodos(JSON.parse(data!) || []);
+    if (data === null) return;
+    setTodos(JSON.parse(data));
   };
 
   const saveData = () => {
