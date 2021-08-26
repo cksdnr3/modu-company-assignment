@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Todo } from "todo/TodoService";
 import TodoItem from "components/TodoItem/TodoItem";
 import styled from "styled-components";
@@ -12,18 +12,51 @@ interface TodoListProps {
   todo: Todo[];
 }
 
+interface Drag {
+  point: number;
+  originalOrder: Todo[];
+}
+
 export default function TodoList({
   changeStatus,
   removeTodo,
   handleToggle,
   todo,
 }: TodoListProps) {
+  const [list, setList] = useState<Todo[]>([]);
+  const [drag, setDrag] = useState<Drag>({
+    point: -1,
+    originalOrder: [],
+  });
+
+  useEffect(() => setList(todo), [todo]);
+
+  const onDragStart = (event: React.DragEvent<HTMLElement>): void => {
+    const startPosition = Number(event.currentTarget.dataset.position);
+    setDrag({ point: startPosition, originalOrder: list });
+  };
+
+  const onDragOver = (event: React.DragEvent<HTMLElement>): void => {
+    event.preventDefault();
+
+    const overPosition = Number(event.currentTarget.dataset.position);
+    const dragList = drag.originalOrder.filter((_, idx) => idx !== drag.point);
+
+    setList([
+      ...dragList.slice(0, overPosition),
+      drag.originalOrder[drag.point],
+      ...dragList.slice(overPosition),
+    ]);
+  };
+
   return (
     <Container>
-      <Icon onClick={handleToggle}><FilterIcon /></Icon>
+      <Icon onClick={handleToggle}>
+        <FilterIcon />
+      </Icon>
       <Wrap>
-        {todo &&
-          todo.map((item) => (
+        {list &&
+          list.map((item) => (
             <TodoItem
               changeStatus={changeStatus}
               removeTodo={removeTodo}
@@ -52,4 +85,4 @@ const Wrap = styled.div`
 const Icon = styled.span`
   display: flex;
   flex-direction: row-reverse;
-`
+`;
