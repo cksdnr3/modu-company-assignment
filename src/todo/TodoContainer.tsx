@@ -38,22 +38,24 @@ const TodoContainer: React.FC = () => {
 
   return (
     <Container>
-      <TodoHeader createTodo={createTodo} />
-      {
-        toggle 
-        && <TodoFilter 
-          filterTags={filterTags}
-          handleFilter={handleFilter}
-          {...filterToggle} 
-          />
-      }
+      <Wrap>
+        <TodoHeader createTodo={createTodo} />
+        {
+          toggle 
+          && <TodoFilter 
+            filterTags={filterTags}
+            handleFilter={handleFilter}
+            {...filterToggle} 
+            />
+        }
 
-      <TodoList
-        removeTodo={removeTodo}
-        changeStatus={changeStatus}
-        todo={filter(filterTags, todos)}
-        {...filterToggle}
-      />
+        <TodoList
+          removeTodo={removeTodo}
+          changeStatus={changeStatus}
+          todo={filter(filterTags, todos)}
+          {...filterToggle}
+        />
+      </Wrap>
     </Container>
   );
 };
