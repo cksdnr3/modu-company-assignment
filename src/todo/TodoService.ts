@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { formatDate } from "utils/formatDate";
-import dummyData from "assets/data/dummyData.json";
+import { useState, useEffect } from 'react';
+import { formatDate } from 'utils/formatDate';
+import dummyData from 'assets/data/dummyData.json';
 
 export enum status {
-  PENDING = "pending",
-  ONGOING = "ongoing",
-  COMPLETED = "completed",
+  PENDING = 'pending',
+  ONGOING = 'ongoing',
+  COMPLETED = 'completed',
 }
 
 export enum importance {
-  LOW,
-  MID,
-  HIGH,
+  LOW = 'LOW',
+  MID = 'MID',
+  HIGH = 'HIGH',
 }
 
 export type Todo = {
@@ -19,14 +19,14 @@ export type Todo = {
   id: number;
   task: string;
   status: string;
-  importance: number;
+  importance: string;
   createdAt: string;
   updatedAt?: string;
 };
 
 export type CreateTodo = {
   task: string;
-  importance: number;
+  importance: string;
 };
 
 export const useTodo = () => {
@@ -69,12 +69,12 @@ export const useTodo = () => {
   }, [todos]);
 
   const loadData = () => {
-    let data = localStorage.getItem("todos");
+    let data = localStorage.getItem('todos');
     setTodos(JSON.parse(data!) || [...dummyData]);
   };
 
   const saveData = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
+    localStorage.setItem('todos', JSON.stringify(todos));
   };
 
   return {
