@@ -14,6 +14,19 @@ export enum importance {
   HIGH = "🟢",
 }
 
+export const filters: FiltersType = {
+  status: status,
+  importance: importance,
+}
+
+type FiltersType = {
+  [key: string]: EnumType;
+}
+
+type EnumType = {
+  [key: string]: string;
+}
+
 export type Todo = {
   [key: string]: string | number | undefined;
   id: number;

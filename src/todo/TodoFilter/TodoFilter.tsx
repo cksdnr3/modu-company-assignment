@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import { useToggleReturnTypes } from "hooks/useToggle";
 import { FilterTagsType } from "utils/filter";
 import CloseIcon from "components/icons/CloseIcon";
+import { filters } from "todo/TodoService";
 
 interface TodoFilterTypes extends useToggleReturnTypes {
   filterTags: FilterTagsType;
@@ -49,12 +50,17 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({
             <Header>Filter</Header>
             <Content>
               <FieldSet>
-                {Object.entries(form).map(([key, tags]) => (
+                {Object.entries(filters).map(([key, tags]) => (
                   <FilterDiv key={key}>
                     <Legend>{key}</Legend>
                     <TagDiv>
-                      {Object.keys(tags).map((tag) => {
-                        const checked = form[key][tag];
+                      {Object.entries(tags).map(([tag, v]) => {
+                        const checked = form[key][v];
+
+                        const text = key === 'importance' 
+                        ? `${tag} ${filters[key][tag]}`
+                        : `${tag}`;
+
                         return (
                           <div key={tag}>
                             <Label htmlFor={tag} tag={tag} select={checked} />
@@ -62,9 +68,9 @@ const TodoFilter: React.FC<TodoFilterTypes> = ({
                               id={tag}
                               checked={checked}
                               type="checkbox"
-                              onChange={() => handleCheckBoxClick(key, tag)}
+                              onChange={() => handleCheckBoxClick(key, v)}
                             />
-                            <BoldText>{tag.toUpperCase()}</BoldText>
+                            <BoldText>{text}</BoldText>
                           </div>
                         );
                       })}
@@ -140,11 +146,7 @@ const Label = styled.label<LabelPropsTypes>`
   height: 17px;
   ${(props) => {
     function colorGenerator() {
-      const color: { [tag: string]: string } = {
-        LOW: "red",
-        MID: "yellow",
-        HIGH: "green",
-      };
+      const color: { [tag: string]: string } = {};
 
       return color[props.tag] || "rgb(18 110 130)";
     }
