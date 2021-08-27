@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { ReactComponent as Edit } from 'assets/images/edit.svg';
-import { ReactComponent as Trash } from 'assets/images/trash.svg';
-import { Todo, status, importance } from 'todo/TodoService';
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
+import { ReactComponent as Edit } from "assets/images/edit.svg";
+import { ReactComponent as Trash } from "assets/images/trash.svg";
+import { Todo, status, importance } from "todo/TodoService";
 
 const statusRank = [status.PENDING, status.ONGOING, status.COMPLETED];
 const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
 
 interface TodoItemProps {
+  onDragStart: (e: React.DragEvent<HTMLElement>) => void;
+  onDragOver: (e: React.DragEvent<HTMLElement>) => void;
   changeStatus: (todo: Todo) => void;
   removeTodo: (id: number) => void;
   todo: Todo;
 }
 
 export default function TodoItem({
+  onDragStart,
+  onDragOver,
   changeStatus,
   removeTodo,
   todo,
@@ -50,20 +54,26 @@ export default function TodoItem({
   };
 
   const changeToIcon = (value: string) => {
-    if (value === 'LOW') return `🔴`;
-    if (value === 'MID') return `🟡`;
-    if (value === 'HIGH') return `🟢`;
+    if (value === "LOW") return `🔴`;
+    if (value === "MID") return `🟡`;
+    if (value === "HIGH") return `🟢`;
   };
 
   return (
-    <Container isModify={isModify}>
+    <Container
+      draggable
+      data-position={todo.index}
+      isModify={isModify}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+    >
       <TaskBox>
         <ImfortanceBox>
           {!isModify ? (
             <ImfortanceStatus>{changeToIcon(todo.importance)}</ImfortanceStatus>
           ) : (
             <Select
-              name='importance'
+              name="importance"
               value={form.importance}
               onChange={handleChange}
             >
@@ -78,7 +88,7 @@ export default function TodoItem({
         {!isModify ? (
           <Text>{todo.task}</Text>
         ) : (
-          <TaskInput name='task' value={form.task} onChange={handleChange} />
+          <TaskInput name="task" value={form.task} onChange={handleChange} />
         )}
       </TaskBox>
       <Wrap>
@@ -122,10 +132,10 @@ export default function TodoItem({
 }
 
 const Container = styled.div<{ isModify: boolean }>`
-  ${({ theme }) => theme.flexSet('space-between', '', 'column')};
+  ${({ theme }) => theme.flexSet("space-between", "", "column")};
   width: 100%;
   height: 55px;
-  min-height: ${({ isModify }) => (isModify ? '110px' : '70px')};
+  min-height: ${({ isModify }) => (isModify ? "110px" : "70px")};
   margin: 10px 0;
   padding: 10px;
   background-color: white;
@@ -139,7 +149,7 @@ const ImfortanceStatus = styled.div`
 `;
 
 const TaskBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+  ${({ theme }) => theme.flexSet("flex-start")};
   height: 100%;
 `;
 
@@ -161,7 +171,7 @@ const TaskInput = styled.input`
 `;
 
 const ImfortanceBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+  ${({ theme }) => theme.flexSet("flex-start")};
 `;
 const Select = styled.select`
   width: 50px;
@@ -174,12 +184,12 @@ const Select = styled.select`
 `;
 
 const Wrap = styled.div`
-  ${({ theme }) => theme.flexSet('space-between')};
+  ${({ theme }) => theme.flexSet("space-between")};
   margin-top: 10px;
 `;
 
 const StatusBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+  ${({ theme }) => theme.flexSet("flex-start")};
 `;
 
 const Status = styled.div<{
@@ -248,7 +258,7 @@ const DeleteButton = styled.button`
 `;
 
 const ButtonBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-end', 'flex-end')};
+  ${({ theme }) => theme.flexSet("flex-end", "flex-end")};
   height: 100%;
   cursor: pointer;
 `;

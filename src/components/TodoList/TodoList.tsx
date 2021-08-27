@@ -23,17 +23,17 @@ export default function TodoList({
   handleToggle,
   todo,
 }: TodoListProps) {
-  const [list, setList] = useState<Todo[]>([]);
+  const [dragList, setDragList] = useState<Todo[]>([]);
   const [drag, setDrag] = useState<Drag>({
     point: -1,
     originalOrder: [],
   });
 
-  useEffect(() => setList(todo), [todo]);
+  useEffect(() => setDragList(todo), [todo]);
 
   const onDragStart = (event: React.DragEvent<HTMLElement>): void => {
     const startPosition = Number(event.currentTarget.dataset.position);
-    setDrag({ point: startPosition, originalOrder: list });
+    setDrag({ point: startPosition, originalOrder: dragList });
   };
 
   const onDragOver = (event: React.DragEvent<HTMLElement>): void => {
@@ -42,7 +42,7 @@ export default function TodoList({
     const overPosition = Number(event.currentTarget.dataset.position);
     const dragList = drag.originalOrder.filter((_, idx) => idx !== drag.point);
 
-    setList([
+    setDragList([
       ...dragList.slice(0, overPosition),
       drag.originalOrder[drag.point],
       ...dragList.slice(overPosition),
@@ -51,16 +51,18 @@ export default function TodoList({
 
   return (
     <Container>
-      <Icon onClick={handleToggle}>
-        <FilterIcon />
-      </Icon>
+      <Reverse>
+        <FilterIcon width="27" height="27" handleToggle={handleToggle} />
+      </Reverse>
       <Wrap>
-        {list &&
-          list.map((item) => (
+        {dragList &&
+          dragList.map((item, index) => (
             <TodoItem
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
               changeStatus={changeStatus}
               removeTodo={removeTodo}
-              todo={item}
+              todo={{ ...item, index }}
               key={item.id}
             />
           ))}
@@ -82,7 +84,7 @@ const Wrap = styled.div`
   overflow-y: scroll;
 `;
 
-const Icon = styled.span`
+const Reverse = styled.span`
   display: flex;
   flex-direction: row-reverse;
 `;

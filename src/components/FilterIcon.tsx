@@ -3,11 +3,14 @@ import React from 'react';
 interface FilterIconTypes {
     width?: string;
     height?: string;
+    handleToggle: () => void;
 }
 
-const FilterIcon: React.FC<FilterIconTypes> = ({ width, height }) => {
+const FilterIcon: React.FC<FilterIconTypes> = ({ width, height, handleToggle }) => {
     return (
-        <span style={{cursor: 'pointer'}}>
+        <span 
+        onClick={handleToggle}
+        style={{cursor: 'pointer'}}>
             <svg
             xmlns="http://www.w3.org/2000/svg" 
             version="1.1" id="mdi-filter" 
