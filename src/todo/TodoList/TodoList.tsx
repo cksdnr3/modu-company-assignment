@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Todo } from "todo/TodoService";
-import TodoItem from "components/TodoItem/TodoItem";
+import TodoItem from "todo/TodoItem/TodoItem";
 import styled from "styled-components";
-import FilterIcon from "components/FilterIcon";
+import FilterIcon from "components/icons/FilterIcon";
 
 interface TodoListProps {
   changeStatus: (todo: Todo) => void;

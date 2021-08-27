@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { ReactComponent as Edit } from "assets/images/edit.svg";
-import { ReactComponent as Trash } from "assets/images/trash.svg";
+import EditIcon from "components/icons/EditIcon";
+import TrashIcon from "components/icons/TrashIcon";
 import { Todo, status, importance } from "todo/TodoService";
-
-const statusRank = [status.PENDING, status.ONGOING, status.COMPLETED];
-const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
 
 interface TodoItemProps {
   onDragStart: (e: React.DragEvent<HTMLElement>) => void;
@@ -53,12 +50,6 @@ export default function TodoItem({
     setIsModify(false);
   };
 
-  const changeToIcon = (value: string) => {
-    if (value === "LOW") return `🔴`;
-    if (value === "MID") return `🟡`;
-    if (value === "HIGH") return `🟢`;
-  };
-
   return (
     <Container
       draggable
@@ -70,16 +61,16 @@ export default function TodoItem({
       <TaskBox>
         <ImfortanceBox>
           {!isModify ? (
-            <ImfortanceStatus>{changeToIcon(todo.importance)}</ImfortanceStatus>
+            <ImfortanceStatus>{todo.importance}</ImfortanceStatus>
           ) : (
             <Select
               name="importance"
               value={form.importance}
               onChange={handleChange}
             >
-              {impotantRank.map((value) => (
+              {Object.values(importance).map((value) => (
                 <option key={value} value={value}>
-                  {changeToIcon(value)}
+                  {value}
                 </option>
               ))}
             </Select>
@@ -94,7 +85,7 @@ export default function TodoItem({
       <Wrap>
         <StatusBox>
           {isModify ? (
-            statusRank.map((status) => (
+            Object.values(status).map((status) => (
               <Status
                 key={status}
                 isModify={isModify}
@@ -114,10 +105,12 @@ export default function TodoItem({
         {!isModify ? (
           <div>
             <ModifyButton onClick={() => hadleEdit(todo.id)}>
-              <Edit />
+              {/* <Edit /> */}
+              <EditIcon />
             </ModifyButton>
             <DeleteButton onClick={() => handleRemove(todo.id)}>
-              <Trash />
+              {/* <Trash /> */}
+              <TrashIcon />
             </DeleteButton>
           </div>
         ) : (

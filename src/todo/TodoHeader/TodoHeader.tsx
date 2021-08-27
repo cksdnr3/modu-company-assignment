@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { CreateTodo, importance } from 'todo/TodoService';
-import styled from 'styled-components/macro';
-
-const impotantRank = [importance.LOW, importance.MID, importance.HIGH];
+import React, { useState } from "react";
+import { CreateTodo, importance } from "todo/TodoService";
+import styled from "styled-components/macro";
 
 interface TodoHeaderProps {
   createTodo: (todo: CreateTodo) => void;
@@ -10,7 +8,7 @@ interface TodoHeaderProps {
 
 const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
   const [form, setForm] = useState<CreateTodo>({
-    task: '',
+    task: "",
     importance: importance.LOW,
   });
 
@@ -18,7 +16,7 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     e.preventDefault();
     if (!form.task.trim()) return;
     createTodo(form);
-    setForm({ task: '', importance: importance.LOW });
+    setForm({ task: "", importance: importance.LOW });
   };
 
   const onChange = (
@@ -29,12 +27,6 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
     setForm({ ...form, [name]: value });
   };
 
-  const changeToIcon = (value: string) => {
-    if (value === 'LOW') return `🔴 ${importance[value]}`;
-    if (value === 'MID') return `🟡 ${importance[value]}`;
-    if (value === 'HIGH') return `🟢 ${importance[value]}`;
-  };
-
   return (
     <Contianer>
       <TextBox>
@@ -42,21 +34,21 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
         <Text>Todo List</Text>
       </TextBox>
       <CreactBox onSubmit={onSubmit}>
-        <Select name='importance' value={form.importance} onChange={onChange}>
-          <option value='none'>중요도</option>
-          {impotantRank.map((value) => (
+        <Select name="importance" value={form.importance} onChange={onChange}>
+          <option value="none">중요도</option>
+          {Object.entries(importance).map(([key, value]) => (
             <option key={value} value={value}>
-              {changeToIcon(value)}
+              {`${value} ${key}`}
             </option>
           ))}
         </Select>
         <Input
-          name='task'
-          type='text'
+          name="task"
+          type="text"
           autoFocus
           onChange={onChange}
           value={form.task}
-          placeholder='할 일을 입력 후, Enter 를 누르세요'
+          placeholder="할 일을 입력 후, Enter 를 누르세요"
         />
         <Button>ADD</Button>
       </CreactBox>
@@ -65,13 +57,13 @@ const TodoHeader: React.FC<TodoHeaderProps> = ({ createTodo }) => {
 };
 
 const Contianer = styled.div`
-  ${({ theme }) => theme.flexSet('', '', 'column')};
+  ${({ theme }) => theme.flexSet("", "", "column")};
   padding: 20px;
   background-color: #f5f5f7;
 `;
 
 const TextBox = styled.div`
-  ${({ theme }) => theme.flexSet('flex-start')};
+  ${({ theme }) => theme.flexSet("flex-start")};
   margin-bottom: 20px;
 `;
 
